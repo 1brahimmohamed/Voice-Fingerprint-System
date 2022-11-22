@@ -208,6 +208,6 @@ body {
 
 /* Door animation */
 
-.door:hover .door-front {
+/* .door:hover .door-front {
     transform: rotateY(-140deg); 
-}  
+}   */

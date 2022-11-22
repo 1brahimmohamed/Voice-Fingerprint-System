@@ -1,10 +1,14 @@
-import React from 'react'
+import React, { useState } from 'react'
 import './Door.css'
 
 function Door() {
+    const [openDoor , setOpenDoor] = useState(false)
+    const handleClick = () => {
+        setOpenDoor(!openDoor)
+    }
     return (
             <div className="door">
-                <div className="door-front">
+                <div className="door-front" style={openDoor ? {transform: "rotateY(-140deg)" } : null}>
                     <div className="knob"></div>
                 </div>
                 <div className="door-back">
@@ -13,6 +17,13 @@ function Door() {
                     <div className="jacket"></div>
                 </div>
                 <div className="door-mat"></div>
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <button onClick={handleClick}>Click</button>
             </div>
     )
 }
