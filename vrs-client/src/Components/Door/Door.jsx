@@ -16,13 +16,7 @@ function Door() {
                     <div className="hat"></div>
                     <div className="jacket"></div>
                 </div>
-                <div className="door-mat"></div>
-                <br />
-                <br />
-                <br />
-                <br />
-                <br />
-                <br />
+                {/* <div className="door-mat"></div> */}
                 <button onClick={handleClick}>Click</button>
             </div>
     )

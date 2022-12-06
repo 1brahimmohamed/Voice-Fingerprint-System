@@ -1,20 +1,20 @@
 /* Body */
 
-body {
+/* body {
     display: flex;
     align-items: center;
     justify-content: center;
     height: 100vh;
     overflow: hidden;
-  }
+  } */
 
 /* Door front */
 
 .door {
     position: relative;
+    top: 5%;
     width: 170px;
     height:270px;
-    cursor: pointer;
     transform-style: preserve-3d;
     transform: perspective(2500px);
    
@@ -24,7 +24,6 @@ body {
     height:270px;
     overflow: hidden;
     transform-origin: left;
-    box-shadow: 30px 0 50px rgba(0,0,0,0.2);
     position: absolute;
     background-color: #924500;
     z-index:1;
@@ -189,7 +188,7 @@ body {
 
 /* Door mat */
 
-.door-mat {
+/* .door-mat {
     position: relative;
     perspective: 200px;
   }
@@ -204,7 +203,7 @@ body {
     top:20px;
     outline:5px solid #a8763e;
     transform: rotateX(45deg);
-  }
+  } */
 
 /* Door animation */
 
