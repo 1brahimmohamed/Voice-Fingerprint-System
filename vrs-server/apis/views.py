@@ -17,26 +17,26 @@ def predict(request):
         mp3 = request.FILES['file']
         print(request.FILES['file'])
 
-        path = convert_to_Wav(mp3)
-        # PRE-PROCESSING (feature extraction) #
+        # path = convert_to_Wav(mp3)
+        # # PRE-PROCESSING (feature extraction) #
 
-        audio, sr = librosa.load(path, duration=3)
+        # audio, sr = librosa.load(path, duration=3)
 
-        audio, index = librosa.effects.trim(audio)
-        rms = librosa.feature.rms(y=audio)
-        zcr = librosa.feature.zero_crossing_rate(audio)
-        mfcc = librosa.feature.mfcc(y=audio, sr=sr)
-        # dataframe row
-        row_data = f'{np.mean(rms)} {np.mean(zcr)}'
+        # audio, index = librosa.effects.trim(audio)
+        # rms = librosa.feature.rms(y=audio)
+        # zcr = librosa.feature.zero_crossing_rate(audio)
+        # mfcc = librosa.feature.mfcc(y=audio, sr=sr)
+        # # dataframe row
+        # row_data = f'{np.mean(rms)} {np.mean(zcr)}'
 
-        # add mfcc features
-        for feat in mfcc:
-            row_data += f' {np.mean(feat)}'
+        # # add mfcc features
+        # for feat in mfcc:
+        #     row_data += f' {np.mean(feat)}'
 
-        # RETURN OUTPUT TO FRONT #
-        prediction = model.predict([row_data.split()])
-        return HttpResponse([prediction])
-
+        # # RETURN OUTPUT TO FRONT #
+        # prediction = model.predict([row_data.split()])
+        # return HttpResponse([prediction])
+        return HttpResponse([0])
 
 def convert_to_Wav(mp3_file):
     dist = 'operating.wav'

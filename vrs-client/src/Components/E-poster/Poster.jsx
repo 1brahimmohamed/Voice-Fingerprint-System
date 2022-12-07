@@ -3,7 +3,7 @@ import './Poster.css'
 import Door from '../Door/Door'
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
-import Container from 'react-bootstrap/Container';
+// import Container from 'react-bootstrap/Container';
 import Record from '../Record/Record';
 
 
@@ -18,12 +18,7 @@ function Poster() {
         <div className='methods'>methods</div>
         </Col>
         <Col>
-        <div className='door-container'>
-        <Door/>
-        <div className='record'>
-        <Record/>
-        </div>
-        </div>
+        <div className='record'><Record/></div>
         <div className='results'>Results</div>
         </Col>
         <Col>

@@ -15,10 +15,10 @@ body {
 }
 
 .separator {
-    width: 150px;
-    height: 4px;
-    background-color: #41b6e6;
-    margin: 24px;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background-color: red;
   }
 
 .columns-container {
@@ -59,10 +59,16 @@ body {
 }
 
 .record {
-    height: 11rem;
+    max-width: 100%;
+    /* background-color: #41b6e6; */
+    border-radius: 10px;
+    margin: 0.7rem 0rem 0rem 0rem;
+    height: 35vh;
+    border: 1px dotted #41b6e6;
     display: flex;
     justify-content: center;
     align-items: center;
+    /* color: white; */
 }
 
 .results {
@@ -70,7 +76,7 @@ body {
     /* background-color: #41b6e6; */
     border-radius: 10px;
     margin: 0.7rem 0rem 0rem 0rem;
-    height: 15vh;
+    height: 45vh;
     border: 1px dotted #41b6e6;
     /* color: white; */
 }
