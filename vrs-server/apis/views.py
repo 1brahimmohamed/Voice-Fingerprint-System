@@ -1,15 +1,12 @@
-import os.path
-import pickle
-
 import librosa
 import numpy as np
-import joblib
 from pydub import AudioSegment
 
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.csrf import csrf_protect
 from django.http import HttpResponse
-from django.shortcuts import render
+
+from . import model
 
 
 @csrf_protect
@@ -20,26 +17,23 @@ def predict(request):
         mp3 = request.FILES['file']
         print(request.FILES['file'])
 
-        # CONVERSION
-        # sound = AudioSegment.from_mp3(mp3)
+        # PRE-PROCESSING (feature extraction) #
 
-        # PRE-PROCESSING #
+        audio, sr = librosa.load(path, duration=3)
 
-        audio, sr = librosa.load(mp3, duration=2)
-
-        rmse = librosa.feature.rms(y=audio)
+        audio, index = librosa.effects.trim(audio)
+        rms = librosa.feature.rms(y=audio)
         zcr = librosa.feature.zero_crossing_rate(audio)
         mfcc = librosa.feature.mfcc(y=audio, sr=sr)
-        # dataframe row
-        row_data = f'{np.mean(rmse)} {np.mean(zcr)}'
+        # dataframe rowgit
+        row_data = f'{np.mean(rms)} {np.mean(zcr)}'
 
         # add mfcc features
-        for e in mfcc:
-            row_data += f' {np.mean(e)}'
-
-        print(len(row_data.split()))
-        # print(row_data.split())
+        for feat in mfcc:
+            row_data += f' {np.mean(feat)}'
 
         # RETURN OUTPUT TO FRONT #
+        prediction = model.predict([row_data.split()])
+        return HttpResponse([prediction])
 
-        return HttpResponse([1, 2, 0, 5])
+
