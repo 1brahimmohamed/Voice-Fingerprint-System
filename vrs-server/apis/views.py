@@ -1,15 +1,12 @@
-import os.path
-import pickle
-
 import librosa
 import numpy as np
-import joblib
 from pydub import AudioSegment
 
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.csrf import csrf_protect
 from django.http import HttpResponse
-from django.shortcuts import render
+
+from . import model
 
 
 @csrf_protect
@@ -20,26 +17,30 @@ def predict(request):
         mp3 = request.FILES['file']
         print(request.FILES['file'])
 
-        # CONVERSION
-        # sound = AudioSegment.from_mp3(mp3)
+        # path = convert_to_Wav(mp3)
+        # # PRE-PROCESSING (feature extraction) #
 
-        # PRE-PROCESSING #
+        # audio, sr = librosa.load(path, duration=3)
 
-        audio, sr = librosa.load(mp3, duration=2)
+        # audio, index = librosa.effects.trim(audio)
+        # rms = librosa.feature.rms(y=audio)
+        # zcr = librosa.feature.zero_crossing_rate(audio)
+        # mfcc = librosa.feature.mfcc(y=audio, sr=sr)
+        # # dataframe row
+        # row_data = f'{np.mean(rms)} {np.mean(zcr)}'
 
-        rmse = librosa.feature.rms(y=audio)
-        zcr = librosa.feature.zero_crossing_rate(audio)
-        mfcc = librosa.feature.mfcc(y=audio, sr=sr)
-        # dataframe row
-        row_data = f'{np.mean(rmse)} {np.mean(zcr)}'
+        # # add mfcc features
+        # for feat in mfcc:
+        #     row_data += f' {np.mean(feat)}'
 
-        # add mfcc features
-        for e in mfcc:
-            row_data += f' {np.mean(e)}'
+        # # RETURN OUTPUT TO FRONT #
+        # prediction = model.predict([row_data.split()])
+        # return HttpResponse([prediction])
+        return HttpResponse([0])
 
-        print(len(row_data.split()))
-        # print(row_data.split())
+def convert_to_Wav(mp3_file):
+    dist = 'operating.wav'
+    sound = AudioSegment.from_mp3(mp3_file)
+    sound.export(dist, format="wav")
 
-        # RETURN OUTPUT TO FRONT #
-
-        return HttpResponse([1, 2, 0, 5])
+    return dist
