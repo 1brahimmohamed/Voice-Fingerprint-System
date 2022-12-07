@@ -1,6 +1,0 @@
-{
-  "dependencies": {
-    "react-recorder-voice": "^1.2.8",
-    "react-router-dom": "^6.4.3"
-  }
-}
