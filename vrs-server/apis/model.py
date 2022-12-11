@@ -102,4 +102,3 @@ X_test_prediction_nb = nb_model.predict(X_test)
 new_score = accuracy_score(X_test_prediction_nb, y_test)
 print("accuracy is:")
 print(accuracy_score(X_test_prediction_nb, y_test))
-
