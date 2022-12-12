@@ -51,8 +51,20 @@ def predict(request):
 
 i = 0
 def convert_to_Wav(mp3_file):
-    dist = 'operating.wav'
-    sound = pydub.AudioSegment.from_mp3(mp3_file)
+
+    global i
+    dir_ = './apis/Website Data/ibrahim-other'
+    record_names = list(os.listdir(dir_))
+
+    max = 0
+    for name in record_names:
+        if max < int(name.split('.')[0]):
+            max = int(name.split('.')[0])
+
+
+    dist = './apis/Website Data/ibrahim-other/'+str(max+1)+'.wav'
+
+    sound = AudioSegment.from_mp3(mp3_file)
     sound.export(dist, format="wav")
 
     return dist
