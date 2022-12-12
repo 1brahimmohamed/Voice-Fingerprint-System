@@ -53,7 +53,7 @@ i = 0
 def convert_to_Wav(mp3_file):
 
     global i
-    dir_ = './apis/webrecord5/'
+    dir_ = './apis/Website Data/ibrahim-other'
     record_names = list(os.listdir(dir_))
 
     max = 0
@@ -62,7 +62,7 @@ def convert_to_Wav(mp3_file):
             max = int(name.split('.')[0])
 
 
-    dist = './apis/webrecord5/'+str(max+1)+'.wav'
+    dist = './apis/Website Data/ibrahim-other/'+str(max+1)+'.wav'
 
     sound = AudioSegment.from_mp3(mp3_file)
     sound.export(dist, format="wav")
