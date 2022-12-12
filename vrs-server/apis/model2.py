@@ -13,6 +13,7 @@ from sklearn.model_selection import train_test_split
 from sklearn import svm
 from sklearn.metrics import accuracy_score
 from sklearn.neighbors import KNeighborsClassifier
+from sklearn.linear_model import LogisticRegression
 from sklearn.ensemble import RandomForestClassifier
 from sklearn import preprocessing
 
@@ -28,11 +29,12 @@ np_scaled = min_max_scaler.fit_transform(X)
 
 # new data frame with the new scaled data.
 X = pd.DataFrame(np_scaled, columns = cols)
+
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.1, random_state=42,shuffle = True)
 
 #creating the model
-model = RandomForestClassifier(n_estimators=1000, max_depth=5, random_state=0)
-model.fit(X_train, y_train)
+model = LogisticRegression()
+model.fit(X, y)
 
 
 predictions = model.predict(X_train)
