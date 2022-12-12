@@ -1,12 +1,12 @@
 import librosa
 import numpy as np
-from pydub import AudioSegment
+import pydub
 import json
-from . import model2
+
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.csrf import csrf_protect
 from django.http import HttpResponse
-import os
+
 from . import model
 
 
@@ -38,7 +38,7 @@ def predict(request):
         prediction = model.predict([row_data.split()])
         prediction2 = model2.get_result("./apis/operating.wav")
 
-        return HttpResponse([prediction, prediction2])
+        return HttpResponse(prediction)
 
 
 # def convert_to_Wav(mp3_file):
