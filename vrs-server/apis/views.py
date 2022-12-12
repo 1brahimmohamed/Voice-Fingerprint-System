@@ -22,9 +22,8 @@ def predict(request):
         path = convert_to_Wav(mp3)
         # PRE-PROCESSING (feature extraction) #
 
-        audio, sr = librosa.load(path, duration=2)
+        audio, sr = librosa.load("./apis/operating.wav", duration=2)
 
-        audio, index = librosa.effects.trim(audio)
         rms = librosa.feature.rms(y=audio)
         zcr = librosa.feature.zero_crossing_rate(audio)
         mfcc = librosa.feature.mfcc(y=audio, sr=sr)
@@ -37,7 +36,7 @@ def predict(request):
 
         # RETURN OUTPUT TO FRONT #
         prediction = model.predict([row_data.split()])
-        prediction2 = model2.get_result(path)
+        prediction2 = model2.get_result("./apis/operating.wav")
 
         return HttpResponse([prediction, prediction2])
 
@@ -51,7 +50,7 @@ def predict(request):
 
 i = 0
 def convert_to_Wav(mp3_file):
-
+    '''
     global i
     dir_ = './apis/webrecord5/'
     record_names = list(os.listdir(dir_))
@@ -66,12 +65,8 @@ def convert_to_Wav(mp3_file):
 
     sound = AudioSegment.from_mp3(mp3_file)
     sound.export(dist, format="wav")
+    '''
+    sound = AudioSegment.from_mp3(mp3_file)
+    sound.export("./apis/operating.wav", format="wav")
 
-    return dist
-
-@csrf_protect
-@csrf_exempt
-def save_audios(request):
-    mp3 = request.FILES['file']
-    path = convert_to_Wav(mp3)
-    return HttpResponse([0])
+    return "operating.wav"
