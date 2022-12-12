@@ -1,12 +1,12 @@
 import librosa
 import numpy as np
-from pydub import AudioSegment
+import pydub
 import json
-from . import model2
+
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.csrf import csrf_protect
 from django.http import HttpResponse
-import os
+
 from . import model
 
 
@@ -22,7 +22,7 @@ def predict(request):
         path = convert_to_Wav(mp3)
         # PRE-PROCESSING (feature extraction) #
 
-        audio, sr = librosa.load(path, duration=2)
+        audio, sr = librosa.load(path, duration=3)
 
         audio, index = librosa.effects.trim(audio)
         rms = librosa.feature.rms(y=audio)
@@ -37,9 +37,9 @@ def predict(request):
 
         # RETURN OUTPUT TO FRONT #
         prediction = model.predict([row_data.split()])
-        prediction2 = model2.get_result(path)
+        print(prediction)
 
-        return HttpResponse([prediction, prediction2])
+        return HttpResponse(prediction)
 
 
 # def convert_to_Wav(mp3_file):
@@ -51,27 +51,8 @@ def predict(request):
 
 i = 0
 def convert_to_Wav(mp3_file):
-
-    global i
-    dir_ = './apis/webrecord5/'
-    record_names = list(os.listdir(dir_))
-
-    max = 0
-    for name in record_names:
-        if max < int(name.split('.')[0]):
-            max = int(name.split('.')[0])
-
-
-    dist = './apis/webrecord5/'+str(max+1)+'.wav'
-
-    sound = AudioSegment.from_mp3(mp3_file)
+    dist = 'operating.wav'
+    sound = pydub.AudioSegment.from_mp3(mp3_file)
     sound.export(dist, format="wav")
 
     return dist
-
-@csrf_protect
-@csrf_exempt
-def save_audios(request):
-    mp3 = request.FILES['file']
-    path = convert_to_Wav(mp3)
-    return HttpResponse([0])
