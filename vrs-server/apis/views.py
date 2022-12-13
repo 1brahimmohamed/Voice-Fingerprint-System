@@ -1,16 +1,72 @@
+import pickle
+
 import librosa
 import numpy as np
 from pydub import AudioSegment
-import json
+import os
 
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.csrf import csrf_protect
 from django.http import HttpResponse
+from scipy.io.wavfile import read
+import python_speech_features as mfcc
+from sklearn import preprocessing
+
 
 from . import model
 from . import model2
 
+models_path = "D:/My PC/Projects/DSP/Voice-Recognition-System/vrs-server/apis/models/"
+models_files = os.listdir(models_path)
+models = [pickle.load(open(models_path + f_name, 'rb')) for f_name in models_files]
 
+
+def calculate_delta(array):
+    rows, cols = array.shape
+    deltas = np.zeros((rows, 20))
+    N = 2
+    for i in range(rows):
+        index = []
+        j = 1
+        while j <= N:
+            if i - j < 0:
+                first = 0
+            else:
+                first = i - j
+            if i + j > rows - 1:
+                second = rows - 1
+            else:
+                second = i + j
+            index.append((second, first))
+            j += 1
+        deltas[i] = (array[index[0][0]] - array[index[0][1]] + (2 * (array[index[1][0]] - array[index[1][1]]))) / 10
+    return deltas
+
+
+def extract_features(audio, rate):
+    mfcc_feature = mfcc.mfcc(audio, rate, 0.025, 0.01, 20, nfft=1200, appendEnergy=True)
+    mfcc_feature = preprocessing.scale(mfcc_feature)
+    delta = calculate_delta(mfcc_feature)
+    combined = np.hstack((mfcc_feature, delta))
+    return combined
+
+
+def convert_to_Wav(mp3_file):
+    global i
+    dir_ = './apis/Website Data/amr-other'
+    record_names = list(os.listdir(dir_))
+
+    max = 0
+    for name in record_names:
+        if max < int(name.split('.')[0]):
+            max = int(name.split('.')[0])
+
+    dist = './apis/Website Data/amr-other/' + str(max + 1) + '.wav'
+
+    sound = AudioSegment.from_mp3(mp3_file)
+    sound.export(dist, format="wav")
+
+    return dist
 
 @csrf_protect
 @csrf_exempt
@@ -39,7 +95,7 @@ def predict(request):
         prediction = model.predict([row_data.split()])
         prediction2 = model2.get_result("./apis/operating.wav")
 
-        return HttpResponse([prediction,prediction2])
+        return HttpResponse([prediction, prediction2])
 
 
 # def convert_to_Wav(mp3_file):
@@ -50,24 +106,38 @@ def predict(request):
 #     return dist
 
 i = 0
-def convert_to_Wav(mp3_file):
-    '''
-    global i
-    dir_ = './apis/webrecord5/'
-    record_names = list(os.listdir(dir_))
-
-    max = 0
-    for name in record_names:
-        if max < int(name.split('.')[0]):
-            max = int(name.split('.')[0])
 
 
-    dist = './apis/webrecord5/'+str(max+1)+'.wav'
 
-    sound = AudioSegment.from_mp3(mp3_file)
-    sound.export(dist, format="wav")
-    '''
-    sound = AudioSegment.from_mp3(mp3_file)
-    sound.export("./apis/operating.wav", format="wav")
 
-    return "operating.wav"
+
+@csrf_protect
+@csrf_exempt
+def save_audios(request):
+    mp3 = request.FILES['file']
+    path = convert_to_Wav(mp3)
+    return HttpResponse([0])
+
+
+@csrf_protect
+@csrf_exempt
+def new_predict(request):
+    if request.method == 'POST':
+        mp3 = request.FILES['file']
+        print(request.FILES['file'])
+        path = convert_to_Wav(mp3)
+
+        sr, audio = read(path)
+        vector = extract_features(audio, sr)
+
+        log_likelihood = np.zeros(len(models))
+
+        for i in range(len(models)):
+            gmm = models[i]  # checking with each model one by one
+            scores = np.array(gmm.score(vector))
+            log_likelihood[i] = scores.sum()
+
+        winner = np.argmax(log_likelihood)
+        print(winner)
+        return HttpResponse(winner)
+
