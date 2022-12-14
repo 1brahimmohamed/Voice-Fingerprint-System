@@ -12,14 +12,14 @@ from scipy.io.wavfile import read
 import python_speech_features as mfcc
 from sklearn import preprocessing
 
-
 from . import model
 from . import model2
 
-models_path = "D:/My PC/Projects/DSP/Voice-Recognition-System/vrs-server/apis/models/"
+models_path = "D:/My PC/Projects/DSP/Voice-Recognition-System/vrs-server/apis/models20/"
 models_files = os.listdir(models_path)
 models = [pickle.load(open(models_path + f_name, 'rb')) for f_name in models_files]
 
+speakers = ['Amr', 'Ibrahim', 'Mariam', 'Momen', 'Other']
 
 def calculate_delta(array):
     rows, cols = array.shape
@@ -68,6 +68,7 @@ def convert_to_Wav(mp3_file):
 
     return dist
 
+
 @csrf_protect
 @csrf_exempt
 def predict(request):
@@ -108,9 +109,6 @@ def predict(request):
 i = 0
 
 
-
-
-
 @csrf_protect
 @csrf_exempt
 def save_audios(request):
@@ -137,7 +135,32 @@ def new_predict(request):
             scores = np.array(gmm.score(vector))
             log_likelihood[i] = scores.sum()
 
-        winner = np.argmax(log_likelihood)
-        print(winner)
-        return HttpResponse(winner)
+        prediction = np.argmax(log_likelihood)
 
+        flag = False
+        flag_out_put = log_likelihood - max(log_likelihood)
+
+        print(log_likelihood)
+
+        for i in range(len(flag_out_put)):
+            if flag_out_put[i] == 0:
+                continue
+            if flag_out_put[i] > -0.07:
+                flag = True
+            if max(log_likelihood) - min(log_likelihood) < 0.5:
+                flag = True
+
+        if flag:
+            prediction = 4
+
+        return HttpResponse(speakers[prediction])
+
+
+# def choose_winner(similarity_score, prediction, threshold=100):
+#     similarity_score = np.sort(similarity_score)
+#     max_diff = similarity_score[3] - similarity_score[2]
+#
+#     if max_diff < threshold:
+#         return 4
+#     else:
+#         return prediction
