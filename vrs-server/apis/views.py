@@ -15,7 +15,7 @@ from sklearn import preprocessing
 # from . import model
 # from . import model2
 
-speakers_models_path = "D:/My PC/Projects/DSP/Voice-Recognition-System/vrs-server/apis/models/speakers/"
+speakers_models_path = "D:/My PC/Projects/DSP/Voice-Recognition-System/vrs-server/apis/models10/"
 speakers_models_files = os.listdir(speakers_models_path)
 speakers_models = [pickle.load(open(speakers_models_path + f_name, 'rb')) for f_name in speakers_models_files]
 
@@ -23,7 +23,7 @@ words_models_path = "D:/My PC/Projects/DSP/Voice-Recognition-System/vrs-server/a
 words_models_files = os.listdir(words_models_path)
 words_models = [pickle.load(open(words_models_path + f_name, 'rb')) for f_name in words_models_files]
 
-speakers = ['Amr', 'Ibrahim', 'Mariam', 'Momen', 'others']
+speakers = ['Amr', 'Ibrahim', 'Momen', 'Mariam','others']
 words = ['other', 'other', 'open', 'other']
 
 
@@ -135,6 +135,7 @@ def new_predict(request):
         vector = extract_features(audio, sr)
 
         log_likelihood_speakers = np.zeros(len(speakers_models))
+
         log_likelihood_words = np.zeros(len(words_models))
 
         for i in range(len(speakers_models)):
@@ -151,8 +152,8 @@ def new_predict(request):
 
         prediction_words = np.argmax(log_likelihood_words)
 
-        print(log_likelihood_speakers)
-        print(log_likelihood_words)
+        print('speakers:', log_likelihood_speakers)
+        print('words: ', log_likelihood_words)
 
         # flag = False
         # flag_out_put = log_likelihood_speakers - max(log_likelihood_speakers)
