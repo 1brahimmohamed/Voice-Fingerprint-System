@@ -23,7 +23,7 @@ body {
 
 .columns-container {
     text-align: center;
-    border: 1.9px solid #41b6e6;
+    border: 1.9px solid #ffffff;
     border-radius: 10px;
     max-width: 100%;
     margin: 0rem 0.7rem 0rem 0.7rem;
@@ -33,21 +33,21 @@ body {
 .intro {
     max-width: 100%;
     /* background-color: #41b6e6; */
-    border: 1px dotted #41b6e6;
+    border: 1px solid #333333;
     border-radius: 10px;
     margin: 0.7rem 0rem 0rem 0.7rem;
-    height: 30vh;
-    /* color: white; */
+    height: 35vh;
+    color: #29485a;
 }
 
 .methods {
     max-width: 100%;
     /* background-color: #41b6e6; */
-    border: 1px dotted #41b6e6;
+    border: 1px solid #333333;
     border-radius: 10px;
     margin: 0.7rem 0rem 0rem 0.7rem;
-    height: 50vh;
-    /* color: white; */
+    height: 60vh;
+    color: #29485a;
 }
 
 .door-container {
@@ -63,12 +63,12 @@ body {
     /* background-color: #41b6e6; */
     border-radius: 10px;
     margin: 0.7rem 0rem 0rem 0rem;
-    height: 35vh;
-    border: 1px dotted #41b6e6;
+    height: 40vh;
+    border: 1px solid #333333;
     display: flex;
     justify-content: center;
     align-items: center;
-    /* color: white; */
+    display: flex;
 }
 
 .results {
@@ -76,9 +76,9 @@ body {
     /* background-color: #41b6e6; */
     border-radius: 10px;
     margin: 0.7rem 0rem 0rem 0rem;
-    height: 45vh;
-    border: 1px dotted #41b6e6;
-    /* color: white; */
+    height: 55vh;
+    border: 1px solid #333333;
+    color: #29485a;
 }
 
 .data-analysis {
@@ -86,9 +86,9 @@ body {
     /* background-color: #41b6e6; */
     border-radius: 10px;
     margin: 0.7rem 0.7rem 0rem 0rem;
-    height: 50vh;
-    border: 1px dotted #41b6e6;
-    /* color: white; */
+    height: 55vh;
+    border: 1px solid #333333;
+    color: #29485a;
 }
 
 .conclusion {
@@ -96,7 +96,7 @@ body {
     /* background-color: #41b6e6; */
     border-radius: 10px;
     margin: 0.7rem 0.7rem 0rem 0rem;
-    height: 30vh;
-    border: 1px dotted #41b6e6;
-    /* color: white; */
+    height: 40vh;
+    border: 1px solid #333333;
+    color: #29485a;
 }
