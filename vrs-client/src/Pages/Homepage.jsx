@@ -8,8 +8,8 @@ import Test from '../Components/SpeechToText/Test';
 function Homepage() {
   return (
     <>
-      {/* <Poster/> */}
-      <Test/>
+      <Poster/>
+      {/* <Test/> */}
     </>
   )
 }

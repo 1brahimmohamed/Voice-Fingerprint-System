@@ -10,7 +10,6 @@ import Record from '../Record/Record';
 function Poster() {
   return (
     <>
-    <div className='nav-poster'>Task 3</div>
     <div  className='columns-container'>
       <Row>
         <Col>

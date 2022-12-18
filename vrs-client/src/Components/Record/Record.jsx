@@ -2,6 +2,8 @@ import React, {useState} from 'react'
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
 import {faMicrophone, faCircleStop} from '@fortawesome/free-solid-svg-icons'
 import axios from 'axios'
+import './Record.css'
+import imgRecording from '../../assets/icons8-audio-wave.gif'
 
 function Record() {
 
@@ -69,10 +71,12 @@ function Record() {
 
 
     return (
-        <div>
-            <FontAwesomeIcon icon={faMicrophone} onClick={startRec} size="2x"/>
-            {recordingStatus ? <div>recording</div> : null}
+        <>
+        <div className='mic-container'>
+            <img onClick={startRec} src="https://img.icons8.com/external-filled-outline-icons-pause-08/64/null/external-microphone-phone-filled-outline-icons-pause-08.png"/>
+            {recordingStatus ? <div><img className='recording-img' src={imgRecording} alt="" /></div> : <div><img src="https://img.icons8.com/ios-glyphs/30/null/dashed-line.png"/></div>}
         </div>
+        </>
     )
 }
 
