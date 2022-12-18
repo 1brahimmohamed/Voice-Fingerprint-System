@@ -15,7 +15,7 @@ from sklearn import preprocessing
 # from . import model
 # from . import model2
 
-speakers_models_path = "D:/My PC/Projects/DSP/Voice-Recognition-System/vrs-server/apis/models10/"
+speakers_models_path = "D:/My PC/Projects/DSP/Voice-Recognition-System/vrs-server/apis/models/speakers/"
 speakers_models_files = os.listdir(speakers_models_path)
 speakers_models = [pickle.load(open(speakers_models_path + f_name, 'rb')) for f_name in speakers_models_files]
 
@@ -23,8 +23,8 @@ words_models_path = "D:/My PC/Projects/DSP/Voice-Recognition-System/vrs-server/a
 words_models_files = os.listdir(words_models_path)
 words_models = [pickle.load(open(words_models_path + f_name, 'rb')) for f_name in words_models_files]
 
-speakers = ['Amr', 'Ibrahim', 'Momen', 'Mariam','others']
-words = ['other', 'other', 'open', 'other']
+speakers = ['Amr', 'Ibrahim', 'Mariam', 'Momen', 'others']
+words = ['other', 'other', 'others', 'open', 'other']
 
 
 def calculate_delta(array):
@@ -106,13 +106,14 @@ def predict(request):
 
 
 # def convert_to_Wav(mp3_file):
-#     dist = 'operating.wav'
+#     x = len(os.listdir('./apis/mariam-others'))
+#     dist = './apis/mariam-others/operating'+str(x)+'.wav'
 #     sound = AudioSegment.from_mp3(mp3_file)
 #     sound.export(dist, format="wav")
 #
 #     return dist
-
-i = 0
+#
+# i = 0
 
 
 @csrf_protect
@@ -150,10 +151,15 @@ def new_predict(request):
             scores = np.array(gmm.score(vector))
             log_likelihood_words[j] = scores.sum()
 
-        prediction_words = np.argmax(log_likelihood_words)
 
-        print('speakers:', log_likelihood_speakers)
+        prediction_words = np.argmax(log_likelihood_words)
+        print(log_likelihood_words)
+
+
+        print('speakers:', log_likelihood_speakers, max(log_likelihood_speakers)-min(log_likelihood_speakers))
         print('words: ', log_likelihood_words)
+
+
 
         # flag = False
         # flag_out_put = log_likelihood_speakers - max(log_likelihood_speakers)
@@ -172,6 +178,14 @@ def new_predict(request):
         #
         # if flag:
         #     prediction_speaker = 4
+
+        if speakers[prediction_speaker] == "Mariam":
+            if log_likelihood_speakers[prediction_speaker] > log_likelihood_words[prediction_words]:
+                print("mariam open")
+                return HttpResponse([speakers[prediction_speaker], "open"])
+            else:
+                print("mariam close")
+                return HttpResponse([speakers[prediction_speaker], "other"])
 
         return HttpResponse([speakers[prediction_speaker], words[prediction_words]])
 
