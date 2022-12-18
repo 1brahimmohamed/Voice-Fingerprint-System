@@ -12,10 +12,10 @@ from scipy.io.wavfile import read
 import python_speech_features as mfcc
 from sklearn import preprocessing
 
-from . import model
-from . import model2
+# from . import model
+# from . import model2
 
-speakers_models_path = "D:/My PC/Projects/DSP/Voice-Recognition-System/vrs-server/apis/models20/"
+speakers_models_path = "D:/My PC/Projects/DSP/Voice-Recognition-System/vrs-server/apis/models10/"
 speakers_models_files = os.listdir(speakers_models_path)
 speakers_models = [pickle.load(open(speakers_models_path + f_name, 'rb')) for f_name in speakers_models_files]
 
@@ -23,8 +23,8 @@ words_models_path = "D:/My PC/Projects/DSP/Voice-Recognition-System/vrs-server/a
 words_models_files = os.listdir(words_models_path)
 words_models = [pickle.load(open(words_models_path + f_name, 'rb')) for f_name in words_models_files]
 
-speakers = ['Amr', 'Ibrahim', 'Mariam', 'Momen', 'Other']
-words = ['book', 'close', 'open', 'window']
+speakers = ['Amr', 'Ibrahim', 'Momen', 'Mariam','others']
+words = ['other', 'other', 'open', 'other']
 
 
 def calculate_delta(array):
@@ -135,6 +135,7 @@ def new_predict(request):
         vector = extract_features(audio, sr)
 
         log_likelihood_speakers = np.zeros(len(speakers_models))
+
         log_likelihood_words = np.zeros(len(words_models))
 
         for i in range(len(speakers_models)):
@@ -151,22 +152,26 @@ def new_predict(request):
 
         prediction_words = np.argmax(log_likelihood_words)
 
-        print(log_likelihood_speakers)
-        print(log_likelihood_words)
+        print('speakers:', log_likelihood_speakers)
+        print('words: ', log_likelihood_words)
 
         # flag = False
-        # flag_out_put = log_likelihood - max(log_likelihood)
+        # flag_out_put = log_likelihood_speakers - max(log_likelihood_speakers)
         #
         # for i in range(len(flag_out_put)):
         #     if flag_out_put[i] == 0:
         #         continue
-        #     if flag_out_put[i] > -0.07:
-        #         flag = True
-        #     if max(log_likelihood) - min(log_likelihood) < 0.5:
-        #         flag = True
+        #     # if flag_out_put[i] > -0.07:
+        #     #     flag = True
+        #
+        # if max(log_likelihood_speakers) - min(log_likelihood_speakers) < 1:
+        #     flag = True
+        #
+        # if max(log_likelihood_speakers) - min(log_likelihood_speakers) < 1:
+        #     prediction_words = 1
         #
         # if flag:
-        #     prediction = 4
+        #     prediction_speaker = 4
 
         return HttpResponse([speakers[prediction_speaker], words[prediction_words]])
 
