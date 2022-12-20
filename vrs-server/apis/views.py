@@ -183,13 +183,18 @@ def new_predict(request):
         #
         # if flag:
         #     prediction_speaker = 4
+        p_speakers = 10 ** log_likelihood_speakers
+        pie_chart_values = list((p_speakers / sum(p_speakers))*100)
 
         if speakers[prediction_speaker] == "Mariam":
             if log_likelihood_speakers[prediction_speaker] > log_likelihood_words[prediction_words]:
                 return JsonResponse(
                     {
                         'speaker': speakers[prediction_speaker],
-                        'word': 'open'
+                        'word': 'open',
+                        'pieChart': pie_chart_values,
+                        'scatterChart': scattered_data
+
 
                     }
                 )
@@ -197,7 +202,9 @@ def new_predict(request):
                 return JsonResponse(
                     {
                         'speaker': speakers[prediction_speaker],
-                        'word': 'others'
+                        'word': 'others',
+                        'pieChart': pie_chart_values,
+                        'scatterChart': scattered_data
                     }
                 )
 
@@ -207,7 +214,7 @@ def new_predict(request):
             {
                 'speaker': speakers[prediction_speaker],
                 'word': words[prediction_words],
-                'pieChart': [12,14,20,30,70],
+                'pieChart': pie_chart_values,
                 'scatterChart': scattered_data
             }
         )
