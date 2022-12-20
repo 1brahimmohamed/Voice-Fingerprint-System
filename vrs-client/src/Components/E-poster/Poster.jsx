@@ -50,7 +50,8 @@ function Poster() {
                         <div className='intro'>
                             <Plot3D plot3D={plot3D} blackPoint={blackPoint}/>
                         </div>
-                        <div className='methods'><img className='gif' src={gif}/>
+                        <div className='methods'>
+                            <img className='gif' src={gif}/>
                         </div>
                     </Col>
                     <Col>
@@ -59,7 +60,7 @@ function Poster() {
                         </div>
                         <div className='results'>
                             <img src={ayhaga}/>
-                        </div>g
+                        </div>
                     </Col>
                     <Col>
                         <div className='data-analysis'>

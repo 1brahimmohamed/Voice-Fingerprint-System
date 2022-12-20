@@ -4,8 +4,6 @@ import Plot from 'react-plotly.js';
 
 function Plot3D(props) {
     let myWidth = 500;
-    let data = props.blackPoint
-    console.log(data[0])
 
     return (
         <Plot
@@ -60,9 +58,9 @@ function Plot3D(props) {
                         name: 'Prediction',
                         mode: 'markers',
                         type: 'scatter3d',
-                        x: props.blackPoint.length ? [data[0]] : [0],
-                        y: props.blackPoint.length ? [data[1]] : [0],
-                        z: props.blackPoint.length ? [data[2]] : [0],
+                        x: props.blackPoint.length ? [props.blackPoint[0]] : [0],
+                        y: props.blackPoint.length ? [props.blackPoint[1]] : [0],
+                        z: props.blackPoint.length ? [props.blackPoint[2]] : [0],
                         marker: {
                             color: 'black'
                         },
@@ -75,7 +73,7 @@ function Plot3D(props) {
                     displayModeBar: false,
                     displaylogo: false
                 }
-            } g
+            }
             layout={
                 {
                     width: myWidth,
