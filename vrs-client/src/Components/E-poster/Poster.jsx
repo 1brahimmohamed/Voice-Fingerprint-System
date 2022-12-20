@@ -9,7 +9,7 @@ import axios from "axios";
 import ScatterPlotCanvas from "../PieChart/scatter";
 import gif from "../../assets/work flow.gif"
 import Plot3D from "../3DPlot";
-import ayhaga from "../../assets/outputfinal.png"
+import deltaImg from "../../assets/outputfinal2.png"
 
 function Poster() {
 
@@ -30,12 +30,12 @@ function Poster() {
             setScatterChart(response.data.scatterChart)
             setPlot3D(response.data.plot3D)
             setBlackPoint(response.data.prePoint)
-            console.log(response.data.speaker)
-            console.log(response.data.word)
-            console.log(response.data.pieChart)
-            console.log(response.data.scatterChart)
-            console.log(response.data.plot3D)
-            console.log(response.data.prePoint)
+            // console.log(response.data.speaker)
+            // console.log(response.data.word)
+            // console.log(response.data.pieChart)
+            // console.log(response.data.scatterChart)
+            // console.log(response.data.plot3D)
+            // console.log(response.data.prePoint)
         }).catch((err) => {
             console.log(err);
         })
@@ -51,7 +51,7 @@ function Poster() {
                             <Plot3D plot3D={plot3D} blackPoint={blackPoint}/>
                         </div>
                         <div className='methods'>
-                            <img className='gif' src={gif}/>
+                            <img src={deltaImg} style={{width: '500px'}}/>
                         </div>
                     </Col>
                     <Col>
@@ -59,7 +59,7 @@ function Poster() {
                             <Record speaker={speaker} word={word} recordHandler={makeServerRequest}/>
                         </div>
                         <div className='results'>
-                            <img src={ayhaga}/>
+                            <img className='gif' src={gif} style={{width: '530px', height: '460px', paddingTop: '60px'}}/>
                         </div>
                     </Col>
                     <Col>

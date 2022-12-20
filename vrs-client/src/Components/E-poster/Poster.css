@@ -33,7 +33,7 @@ body {
 .intro {
     max-width: 100%;
     /* background-color: #41b6e6; */
-    border: 1px solid #333333;
+    /*border: 1px solid #333333;*/
     border-radius: 10px;
     margin: 0.7rem 0rem 0rem 0.7rem;
     height: 55vh;
@@ -46,7 +46,7 @@ body {
 .methods {
     max-width: 100%;
     /* background-color: #41b6e6; */
-    border: 1px solid #333333;
+    /*border: 1px solid #333333;*/
     border-radius: 10px;
     margin: 0.7rem 0rem 0rem 0.7rem;
     height: 40vh;
@@ -70,7 +70,7 @@ body {
     border-radius: 10px;
     margin: 0.7rem 0rem 0rem 0rem;
     height: 40vh;
-    border: 1px solid #333333;
+    /*border: 1px solid #333333;*/
     display: flex;
     justify-content: center;
     align-items: center;
@@ -83,7 +83,7 @@ body {
     border-radius: 10px;
     margin: 0.7rem 0rem 0rem 0rem;
     height: 55vh;
-    border: 1px solid #333333;
+    /*border: 1px solid #333333;*/
     color: #29485a;
 }
 
@@ -93,7 +93,7 @@ body {
     border-radius: 10px;
     margin: 0.7rem 0.7rem 0rem 0rem;
     height: 45vh;
-    border: 1px solid #333333;
+    /*border: 1px solid #333333;*/
     color: #29485a;
     display: flex;
     /*justify-content: center;*/
@@ -106,7 +106,7 @@ body {
     border-radius: 10px;
     margin: 0.7rem 0.7rem 0rem 0rem;
     height: 50vh;
-    border: 1px solid #333333;
+    /*border: 1px solid #333333;*/
     color: #29485a;
     display: flex;
     /*justify-content: center;*/

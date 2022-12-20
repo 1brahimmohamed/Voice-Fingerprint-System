@@ -12,7 +12,7 @@ function PieChartCanvas(props) {
 
     const options = {
         animationEnabled: true,
-        exportEnabled: true,
+        exportEnabled: false,
         theme: "light1", // "light1", "dark1", "dark2"
         title: {
             text: "Results"
@@ -26,7 +26,6 @@ function PieChartCanvas(props) {
                 {y: pieRenderedData[1], label: "Ibrahim"},
                 {y: pieRenderedData[2], label: "Mariam"},
                 {y: pieRenderedData[3], label: "Mo'men"},
-                {y: pieRenderedData[4], label: "Others"},
             ]
         }]
     }
@@ -34,10 +33,7 @@ function PieChartCanvas(props) {
 
     return (
         <div>
-            <CanvasJSChart options={options}
-                /* onRef={ref => this.chart = ref} */
-            />
-            {/*You can get reference to the chart instance as shown above using onRef. This allows you to access all chart properties and methods*/}
+            <CanvasJSChart options={options}/>
         </div>
     )
 }

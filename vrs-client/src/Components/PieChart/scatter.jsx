@@ -10,7 +10,7 @@ function ScatterPlotCanvas(props) {
 	let dataObjects = []
 
     for(let i = 0; i < props.data.length; i++){
-        dataObjects.push({x: i+1, y: props.data[i]})
+        dataObjects.push({x: i+1, y: (10**16)*props.data[i]})
     }
 
 
@@ -20,7 +20,7 @@ function ScatterPlotCanvas(props) {
         animationEnabled: true,
         zoomEnabled: true,
         title: {
-            text: "MFCC Feature "
+            text: "MFCC Features"
         },
         axisX: {
             title: "Feature",

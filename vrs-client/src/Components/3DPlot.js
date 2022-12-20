@@ -83,7 +83,13 @@ function Plot3D(props) {
                         r: 0,
                         b: 0,
                         t: 0
+                    },
+                    scene: {
+                        xaxis: {title: 'MFCC 5'},
+                        yaxis: {title: 'MFCC 6'},
+                        zaxis: {title: 'MFCC 7'}
                     }
+
                 }
             }
 
