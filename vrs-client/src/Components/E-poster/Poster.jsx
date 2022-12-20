@@ -9,6 +9,7 @@ import axios from "axios";
 import ScatterPlotCanvas from "../PieChart/scatter";
 import gif from "../../assets/work flow.gif"
 import Plot3D from "../3DPlot";
+import ayhaga from "../../assets/outputfinal.png"
 
 function Poster() {
 
@@ -55,8 +56,8 @@ function Poster() {
                             <Record speaker={speaker} word={word} recordHandler={makeServerRequest}/>
                         </div>
                         <div className='results'>
-
-                        </div>
+                            <img src={ayhaga}/>
+                        </div>g
                     </Col>
                     <Col>
                         <div className='data-analysis'>

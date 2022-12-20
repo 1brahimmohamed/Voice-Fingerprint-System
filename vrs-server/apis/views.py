@@ -150,6 +150,8 @@ def new_predict(request):
 
         log_likelihood_words = np.zeros(len(words_models))
 
+        point = librosa.load(path)
+
         for i in range(len(speakers_models)):
             gmm = speakers_models[i]  # checking with each model one by one
             scores = np.array(gmm.score(vector))
