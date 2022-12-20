@@ -138,8 +138,8 @@ def save_audios(request):
 @csrf_exempt
 def new_predict(request):
     if request.method == 'POST':
+
         mp3 = request.FILES['file']
-        print(request.FILES['file'])
         path = convert_to_Wav(mp3)
 
         sr, audio = read(path)
@@ -157,16 +157,12 @@ def new_predict(request):
         point_6 = mfcc_point[6].mean()
         point_7 = mfcc_point[7].mean()
 
-        my_point = [float(point_5), float(point_6),float(point_7)]
-
-        print(type(my_point[0]))
+        my_point = [float(point_5), float(point_6), float(point_7)]
 
         for i in range(len(speakers_models)):
             gmm = speakers_models[i]  # checking with each model one by one
             scores = np.array(gmm.score(vector))
             log_likelihood_speakers[i] = scores.sum()
-
-        prediction_speaker = np.argmax(log_likelihood_speakers)
 
         for j in range(len(words_models)):
             gmm = words_models[j]  # checking with each model one by one
@@ -175,32 +171,29 @@ def new_predict(request):
 
         prediction_words = np.argmax(log_likelihood_words)
 
-        # print('speakers:', log_likelihood_speakers)
-        # print('words: ', log_likelihood_words)
+        print('speakers:', log_likelihood_speakers)
+        print('words: ', log_likelihood_words)
         #
 
         vector_df = pd.DataFrame(mfcc_plotted)
         scattered_data = list(vector_df.mean(axis=0))
 
-        # flag = False
-        # flag_out_put = log_likelihood_speakers - max(log_likelihood_speakers)
-        #
-        # for i in range(len(flag_out_put)):
-        #     if flag_out_put[i] == 0:
-        #         continue
-        #     # if flag_out_put[i] > -0.07:
-        #     #     flag = True
-        #
-        # if max(log_likelihood_speakers) - min(log_likelihood_speakers) < 1:
-        #     flag = True
-        #
-        # if max(log_likelihood_speakers) - min(log_likelihood_speakers) < 1:
-        #     prediction_words = 1
-        #
-        # if flag:
-        #     prediction_speaker = 4
         p_speakers = 10 ** log_likelihood_speakers
         pie_chart_values = list((p_speakers / sum(p_speakers)) * 100)
+
+        normalized_possibility = max(log_likelihood_speakers) - log_likelihood_speakers
+        others_flag = True
+
+        for i in range(len(normalized_possibility)):
+            if log_likelihood_speakers[i] == max(log_likelihood_speakers):
+                continue
+            if abs(normalized_possibility[i]) < 0.3:
+                others_flag = False
+                print('gowa')
+        if others_flag:
+            prediction_speaker = np.argmax(log_likelihood_speakers)
+        else:
+            prediction_speaker = 4
 
         if speakers[prediction_speaker] == "Mariam":
             if log_likelihood_speakers[prediction_speaker] > log_likelihood_words[prediction_words]:
@@ -212,7 +205,6 @@ def new_predict(request):
                         'scatterChart': scattered_data,
                         'plot3D': plot_3d,
                         'prePoint': my_point
-
                     }
                 )
             else:
@@ -227,8 +219,6 @@ def new_predict(request):
                     }
                 )
 
-        # return HttpResponse([speakers[prediction_speaker], words[prediction_words]])
-
         return JsonResponse(
             {
                 'speaker': speakers[prediction_speaker],
@@ -239,12 +229,3 @@ def new_predict(request):
                 'prePoint': my_point
             }
         )
-
-# def choose_winner(similarity_score, prediction, threshold=100):
-#     similarity_score = np.sort(similarity_score)
-#     max_diff = similarity_score[3] - similarity_score[2]
-#
-#     if max_diff < threshold:
-#         return 4
-#     else:
-#         return prediction
