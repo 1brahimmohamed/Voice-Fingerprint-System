@@ -18,7 +18,7 @@ function Poster() {
     const [pieChart, setPieChart] = useState([]);
     const [scatterChart, setScatterChart] = useState([]);
     const [plot3D, setPlot3D] = useState([]);
-
+    const [blackPoint, setBlackPoint] = useState([])
 
     const makeServerRequest = (formdata) => {
 
@@ -29,11 +29,13 @@ function Poster() {
             setPieChart(response.data.pieChart)
             setScatterChart(response.data.scatterChart)
             setPlot3D(response.data.plot3D)
+            setBlackPoint(response.data.prePoint)
             console.log(response.data.speaker)
             console.log(response.data.word)
             console.log(response.data.pieChart)
             console.log(response.data.scatterChart)
             console.log(response.data.plot3D)
+            console.log(response.data.prePoint)
         }).catch((err) => {
             console.log(err);
         })
@@ -46,7 +48,7 @@ function Poster() {
                 <Row>
                     <Col>
                         <div className='intro'>
-                            <Plot3D plot3D={plot3D}/>
+                            <Plot3D plot3D={plot3D} blackPoint={blackPoint}/>
                         </div>
                         <div className='methods'><img className='gif' src={gif}/>
                         </div>

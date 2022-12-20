@@ -14,7 +14,6 @@ from scipy.io.wavfile import read
 import python_speech_features as mfcc
 from sklearn import preprocessing
 
-
 # from . import model
 # from . import model2
 
@@ -34,7 +33,7 @@ amr_3d = [list(df["x_amr"]), list(df["y_amr"]), list(df["z_amr"])]
 ibrahim_3d = [list(df["x_ibrahim"]), list(df["y_ibrahim"]), list(df["z_ibrahim"])]
 momen_3d = [list(df["x_momen"]), list(df["y_momen"]), list(df["z_momen"])]
 mariam_3d = [list(df["x_mariam"]), list(df["y_mariam"]), list(df["z_mariam"])]
-plot_3d = [amr_3d,ibrahim_3d,momen_3d,mariam_3d]
+plot_3d = [amr_3d, ibrahim_3d, momen_3d, mariam_3d]
 
 
 def calculate_delta(array):
@@ -150,7 +149,17 @@ def new_predict(request):
 
         log_likelihood_words = np.zeros(len(words_models))
 
-        point = librosa.load(path)
+        point, sr = librosa.load(path)
+
+        mfcc_point = librosa.feature.mfcc(y=point)
+
+        point_5 = mfcc_point[5].mean()
+        point_6 = mfcc_point[6].mean()
+        point_7 = mfcc_point[7].mean()
+
+        my_point = [float(point_5), float(point_6),float(point_7)]
+
+        print(type(my_point[0]))
 
         for i in range(len(speakers_models)):
             gmm = speakers_models[i]  # checking with each model one by one
@@ -164,7 +173,6 @@ def new_predict(request):
             scores = np.array(gmm.score(vector))
             log_likelihood_words[j] = scores.sum()
 
-
         prediction_words = np.argmax(log_likelihood_words)
 
         # print('speakers:', log_likelihood_speakers)
@@ -173,7 +181,6 @@ def new_predict(request):
 
         vector_df = pd.DataFrame(mfcc_plotted)
         scattered_data = list(vector_df.mean(axis=0))
-
 
         # flag = False
         # flag_out_put = log_likelihood_speakers - max(log_likelihood_speakers)
@@ -193,9 +200,7 @@ def new_predict(request):
         # if flag:
         #     prediction_speaker = 4
         p_speakers = 10 ** log_likelihood_speakers
-        pie_chart_values = list((p_speakers / sum(p_speakers))*100)
-
-
+        pie_chart_values = list((p_speakers / sum(p_speakers)) * 100)
 
         if speakers[prediction_speaker] == "Mariam":
             if log_likelihood_speakers[prediction_speaker] > log_likelihood_words[prediction_words]:
@@ -205,8 +210,8 @@ def new_predict(request):
                         'word': 'open',
                         'pieChart': pie_chart_values,
                         'scatterChart': scattered_data,
-                        'plot3D': plot_3d
-
+                        'plot3D': plot_3d,
+                        'prePoint': my_point
 
                     }
                 )
@@ -217,7 +222,8 @@ def new_predict(request):
                         'word': 'others',
                         'pieChart': pie_chart_values,
                         'scatterChart': scattered_data,
-                        'plot3D': plot_3d
+                        'plot3D': plot_3d,
+                        'prePoint': my_point
                     }
                 )
 
@@ -229,12 +235,10 @@ def new_predict(request):
                 'word': words[prediction_words],
                 'pieChart': pie_chart_values,
                 'scatterChart': scattered_data,
-                'plot3D': plot_3d
+                'plot3D': plot_3d,
+                'prePoint': my_point
             }
         )
-
-
-
 
 # def choose_winner(similarity_score, prediction, threshold=100):
 #     similarity_score = np.sort(similarity_score)

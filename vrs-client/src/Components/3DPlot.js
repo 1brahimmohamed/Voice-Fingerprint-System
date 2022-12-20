@@ -4,12 +4,15 @@ import Plot from 'react-plotly.js';
 
 function Plot3D(props) {
     let myWidth = 500;
+    let data = props.blackPoint
+    console.log(data[0])
 
     return (
         <Plot
             data={
                 [
                     {
+                        name: 'Amr',
                         x: props.plot3D.length ? props.plot3D[0][0] : [0],
                         y: props.plot3D.length ? props.plot3D[0][1] : [0],
                         z: props.plot3D.length ? props.plot3D[0][2] : [0],
@@ -20,6 +23,7 @@ function Plot3D(props) {
                         },
                     },
                     {
+                        name: 'Ibrahim',
                         mode: 'markers',
                         type: 'scatter3d',
                         x: props.plot3D.length ? props.plot3D[1][0] : [0],
@@ -31,6 +35,7 @@ function Plot3D(props) {
                     },
 
                     {
+                        name: 'Mariam',
                         mode: 'markers',
                         type: 'scatter3d',
                         x: props.plot3D.length ? props.plot3D[2][0] : [0],
@@ -40,22 +45,24 @@ function Plot3D(props) {
                             color: 'green'
                         },
                     },
-                     {
+                    {
+                        name: "Mo'men",
                         mode: 'markers',
                         type: 'scatter3d',
-                        x: props.plot3D.length? props.plot3D[3][0] : [0],
-                        y: props.plot3D.length? props.plot3D[3][1] : [0],
-                        z: props.plot3D.length? props.plot3D[3][2] : [0],
+                        x: props.plot3D.length ? props.plot3D[3][0] : [0],
+                        y: props.plot3D.length ? props.plot3D[3][1] : [0],
+                        z: props.plot3D.length ? props.plot3D[3][2] : [0],
                         marker: {
                             color: 'yellow'
                         },
                     },
                     {
+                        name: 'Prediction',
                         mode: 'markers',
                         type: 'scatter3d',
-                        x: [0],
-                        y: [0],
-                        z: [0],
+                        x: props.blackPoint.length ? [data[0]] : [0],
+                        y: props.blackPoint.length ? [data[1]] : [0],
+                        z: props.blackPoint.length ? [data[2]] : [0],
                         marker: {
                             color: 'black'
                         },
@@ -68,7 +75,7 @@ function Plot3D(props) {
                     displayModeBar: false,
                     displaylogo: false
                 }
-            }g
+            } g
             layout={
                 {
                     width: myWidth,
