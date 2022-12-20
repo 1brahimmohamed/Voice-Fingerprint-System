@@ -2,7 +2,7 @@ import React from 'react';
 import Plot from 'react-plotly.js';
 
 
-function Plot3D() {
+function Plot3D(props) {
     let myWidth = 500;
 
     return (
@@ -10,9 +10,9 @@ function Plot3D() {
             data={
                 [
                     {
-                        x: [4, 2, 3],
-                        y: [2, 6, 3],
-                        z: [5, 4, 8],
+                        x: props.plot3D.length ? props.plot3D[0][0] : [0],
+                        y: props.plot3D.length ? props.plot3D[0][1] : [0],
+                        z: props.plot3D.length ? props.plot3D[0][2] : [0],
                         type: 'scatter3d',
                         mode: 'markers',
                         marker: {
@@ -22,9 +22,9 @@ function Plot3D() {
                     {
                         mode: 'markers',
                         type: 'scatter3d',
-                        x: [1, 2, 3],
-                        y: [2, 5, 3],
-                        z: [5, 4, 5],
+                        x: props.plot3D.length ? props.plot3D[1][0] : [0],
+                        y: props.plot3D.length ? props.plot3D[1][1] : [0],
+                        z: props.plot3D.length ? props.plot3D[1][2] : [0],
                         marker: {
                             color: 'blue'
                         },
@@ -33,11 +33,31 @@ function Plot3D() {
                     {
                         mode: 'markers',
                         type: 'scatter3d',
-                        x: [1, 2, 3],
-                        y: [2, 3, 7],
-                        z: [3, 4, 5],
+                        x: props.plot3D.length ? props.plot3D[2][0] : [0],
+                        y: props.plot3D.length ? props.plot3D[2][1] : [0],
+                        z: props.plot3D.length ? props.plot3D[2][2] : [0],
                         marker: {
                             color: 'green'
+                        },
+                    },
+                     {
+                        mode: 'markers',
+                        type: 'scatter3d',
+                        x: props.plot3D.length? props.plot3D[3][0] : [0],
+                        y: props.plot3D.length? props.plot3D[3][1] : [0],
+                        z: props.plot3D.length? props.plot3D[3][2] : [0],
+                        marker: {
+                            color: 'yellow'
+                        },
+                    },
+                    {
+                        mode: 'markers',
+                        type: 'scatter3d',
+                        x: [0],
+                        y: [0],
+                        z: [0],
+                        marker: {
+                            color: 'black'
                         },
                     },
                 ]
@@ -48,7 +68,7 @@ function Plot3D() {
                     displayModeBar: false,
                     displaylogo: false
                 }
-            }
+            }g
             layout={
                 {
                     width: myWidth,

@@ -29,6 +29,13 @@ words_models = [pickle.load(open(words_models_path + f_name, 'rb')) for f_name i
 speakers = ['Amr', 'Ibrahim', 'Mariam', 'Momen', 'others']
 words = ['other', 'other', 'others', 'open', 'other']
 
+df = pd.read_csv("apis/3d_2.csv")
+amr_3d = [list(df["x_amr"]), list(df["y_amr"]), list(df["z_amr"])]
+ibrahim_3d = [list(df["x_ibrahim"]), list(df["y_ibrahim"]), list(df["z_ibrahim"])]
+momen_3d = [list(df["x_momen"]), list(df["y_momen"]), list(df["z_momen"])]
+mariam_3d = [list(df["x_mariam"]), list(df["y_mariam"]), list(df["z_mariam"])]
+plot_3d = [amr_3d,ibrahim_3d,momen_3d,mariam_3d]
+
 
 def calculate_delta(array):
     rows, cols = array.shape
@@ -186,6 +193,8 @@ def new_predict(request):
         p_speakers = 10 ** log_likelihood_speakers
         pie_chart_values = list((p_speakers / sum(p_speakers))*100)
 
+
+
         if speakers[prediction_speaker] == "Mariam":
             if log_likelihood_speakers[prediction_speaker] > log_likelihood_words[prediction_words]:
                 return JsonResponse(
@@ -193,7 +202,8 @@ def new_predict(request):
                         'speaker': speakers[prediction_speaker],
                         'word': 'open',
                         'pieChart': pie_chart_values,
-                        'scatterChart': scattered_data
+                        'scatterChart': scattered_data,
+                        'plot3D': plot_3d
 
 
                     }
@@ -204,7 +214,8 @@ def new_predict(request):
                         'speaker': speakers[prediction_speaker],
                         'word': 'others',
                         'pieChart': pie_chart_values,
-                        'scatterChart': scattered_data
+                        'scatterChart': scattered_data,
+                        'plot3D': plot_3d
                     }
                 )
 
@@ -215,9 +226,11 @@ def new_predict(request):
                 'speaker': speakers[prediction_speaker],
                 'word': words[prediction_words],
                 'pieChart': pie_chart_values,
-                'scatterChart': scattered_data
+                'scatterChart': scattered_data,
+                'plot3D': plot_3d
             }
         )
+
 
 
 

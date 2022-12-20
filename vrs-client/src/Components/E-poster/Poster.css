@@ -36,8 +36,11 @@ body {
     border: 1px solid #333333;
     border-radius: 10px;
     margin: 0.7rem 0rem 0rem 0.7rem;
-    height: 35vh;
+    height: 55vh;
     color: #29485a;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .methods {
@@ -46,8 +49,11 @@ body {
     border: 1px solid #333333;
     border-radius: 10px;
     margin: 0.7rem 0rem 0rem 0.7rem;
-    height: 60vh;
+    height: 40vh;
     color: #29485a;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .door-container {
@@ -86,9 +92,12 @@ body {
     /* background-color: #41b6e6; */
     border-radius: 10px;
     margin: 0.7rem 0.7rem 0rem 0rem;
-    height: 55vh;
+    height: 45vh;
     border: 1px solid #333333;
     color: #29485a;
+    display: flex;
+    /*justify-content: center;*/
+    align-items: center;
 }
 
 .conclusion {
@@ -96,7 +105,15 @@ body {
     /* background-color: #41b6e6; */
     border-radius: 10px;
     margin: 0.7rem 0.7rem 0rem 0rem;
-    height: 40vh;
+    height: 50vh;
     border: 1px solid #333333;
     color: #29485a;
+    display: flex;
+    /*justify-content: center;*/
+    align-items: center;
+}
+
+.gif {
+ width: 20rem;
+    height: 20rem;
 }

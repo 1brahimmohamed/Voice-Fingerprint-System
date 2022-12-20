@@ -16,6 +16,8 @@ function Poster() {
     const [word, setWord] = useState('');
     const [pieChart, setPieChart] = useState([]);
     const [scatterChart, setScatterChart] = useState([]);
+    const [plot3D, setPlot3D] = useState([]);
+
 
     const makeServerRequest = (formdata) => {
 
@@ -25,10 +27,12 @@ function Poster() {
             setWord(response.data.word)
             setPieChart(response.data.pieChart)
             setScatterChart(response.data.scatterChart)
+            setPlot3D(response.data.plot3D)
             console.log(response.data.speaker)
             console.log(response.data.word)
             console.log(response.data.pieChart)
             console.log(response.data.scatterChart)
+            console.log(response.data.plot3D)
         }).catch((err) => {
             console.log(err);
         })
@@ -41,9 +45,9 @@ function Poster() {
                 <Row>
                     <Col>
                         <div className='intro'>
-                            <Plot3D/>
+                            <Plot3D plot3D={plot3D}/>
                         </div>
-                        <div className='methods'><img src={gif}/>
+                        <div className='methods'><img className='gif' src={gif}/>
                         </div>
                     </Col>
                     <Col>
