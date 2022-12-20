@@ -5,7 +5,7 @@ import axios from 'axios'
 import './Record.css'
 import imgRecording from '../../assets/icons8-audio-wave.gif'
 
-function Record() {
+function Record(props) {
 
     // const [record, setRecord] = useState(true)
     const [recordingStatus, setRecordingStatus] = useState(null);
@@ -54,13 +54,6 @@ function Record() {
             console.log(file)
             console.log(player)
 
-
-            axios.post('http://127.0.0.1:8000/predictnew', formdata
-            ).then((response) => {
-                console.log(response.data)
-            }).catch((err) => {
-                console.log(err);
-            })
 
         }).catch((e) => {
             alert('We could not retrieve your message');

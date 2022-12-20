@@ -1,3 +1,4 @@
+import json
 import pickle
 
 import librosa
@@ -7,10 +8,11 @@ import os
 
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.csrf import csrf_protect
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from scipy.io.wavfile import read
 import python_speech_features as mfcc
 from sklearn import preprocessing
+
 
 # from . import model
 # from . import model2
@@ -153,10 +155,8 @@ def new_predict(request):
 
 
         prediction_words = np.argmax(log_likelihood_words)
-        print(log_likelihood_words)
 
-
-        print('speakers:', log_likelihood_speakers, max(log_likelihood_speakers)-min(log_likelihood_speakers))
+        print('speakers:', log_likelihood_speakers)
         print('words: ', log_likelihood_words)
 
 
@@ -181,13 +181,29 @@ def new_predict(request):
 
         if speakers[prediction_speaker] == "Mariam":
             if log_likelihood_speakers[prediction_speaker] > log_likelihood_words[prediction_words]:
-                print("mariam open")
-                return HttpResponse([speakers[prediction_speaker], "open"])
-            else:
-                print("mariam close")
-                return HttpResponse([speakers[prediction_speaker], "other"])
+                return JsonResponse(
+                    {
+                        'speaker': speakers[prediction_speaker],
+                        'word': 'open'
 
-        return HttpResponse([speakers[prediction_speaker], words[prediction_words]])
+                    }
+                )
+            else:
+                return JsonResponse(
+                    {
+                        'speaker': speakers[prediction_speaker],
+                        'word': 'others'
+                    }
+                )
+
+        # return HttpResponse([speakers[prediction_speaker], words[prediction_words]])
+
+        return JsonResponse(
+            {
+                'speaker': speakers[prediction_speaker],
+                'word': words[prediction_words]
+            }
+        )
 
 # def choose_winner(similarity_score, prediction, threshold=100):
 #     similarity_score = np.sort(similarity_score)
