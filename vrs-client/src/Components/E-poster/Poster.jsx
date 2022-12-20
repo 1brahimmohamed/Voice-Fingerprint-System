@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useState} from 'react'
 import './Poster.css'
 import Door from '../Door/Door'
 import Row from 'react-bootstrap/Row';
@@ -7,24 +7,33 @@ import Record from '../Record/Record';
 import PieChartCanvas from "../PieChart/pie";
 import axios from "axios";
 import ScatterPlotCanvas from "../PieChart/scatter";
+import gif from "../../assets/work flow.gif"
 
+function Poster() {
 
-let pieData = [25,25,25,25,25]
+    const [speaker , setSpeaker] = useState('');
+    const [word , setWord] = useState('');
+    const [pieChart , setPieChart] = useState([]);
+    const [scatterChart , setScatterChart] = useState([]);
 
-function makeServerRequest(formdata){
+    const makeServerRequest = (formdata) => {
 
     axios.post('http://127.0.0.1:8000/predictnew', formdata
     ).then((response) => {
+        setSpeaker(response.data.speaker)
+        setWord(response.data.word)
+        setPieChart(response.data.pieChart)
+        setScatterChart(response.data.scatterChart)
         console.log(response.data.speaker)
         console.log(response.data.word)
         console.log(response.data.pieChart)
+        console.log(response.data.scatterChart)
     }).catch((err) => {
         console.log(err);
     })
 
 }
 
-function Poster() {
     return (
         <>
             <div className='columns-container'>
@@ -33,19 +42,25 @@ function Poster() {
                         <div className='intro'>intro
 
                         </div>
-                        <div className='methods'>methods</div>
+                        <div className='methods'>methods
+                            <img src={gif}/>
+                        </div>
                     </Col>
                     <Col>
-                        <div className='record'><Record recordHandler = {makeServerRequest}/></div>
+                        <div className='record'>
+                            <Record speaker={speaker} word={word} recordHandler = {makeServerRequest}/>
+                        </div>
                         <div className='results'>
-                            <PieChartCanvas pieChartValues={pieData}/>
+
                         </div>
                     </Col>
                     <Col>
                         <div className='data-analysis'>data-analysis
-                        <ScatterPlotCanvas data={[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20]}/>
+                        <ScatterPlotCanvas data={scatterChart}/>
                         </div>
-                        <div className='conclusion'>conclusion</div>
+                        <div className='conclusion'>
+                            <PieChartCanvas pieChartValues={pieChart}/>
+                        </div>
                     </Col>
                 </Row>
             </div>

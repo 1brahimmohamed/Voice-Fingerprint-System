@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, {Component, useEffect} from 'react';
 import CanvasJSReact from './canvasjs.react';
 import Door from "../Door/Door";
 
@@ -12,6 +12,7 @@ function ScatterPlotCanvas(props) {
     for(let i = 0; i < props.data.length; i++){
         dataObjects.push({x: i+1, y: props.data[i]})
     }
+
 
 
     const options = {

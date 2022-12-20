@@ -3,6 +3,7 @@ import pickle
 
 import librosa
 import numpy as np
+import pandas as pd
 from pydub import AudioSegment
 import os
 
@@ -53,10 +54,11 @@ def calculate_delta(array):
 
 def extract_features(audio, rate):
     mfcc_feature = mfcc.mfcc(audio, rate, 0.025, 0.01, 20, nfft=1200, appendEnergy=True)
+    plotted_mfccs = mfcc_feature
     mfcc_feature = preprocessing.scale(mfcc_feature)
     delta = calculate_delta(mfcc_feature)
     combined = np.hstack((mfcc_feature, delta))
-    return combined
+    return combined, mfcc_feature
 
 
 def convert_to_Wav(mp3_file):
@@ -135,7 +137,7 @@ def new_predict(request):
         path = convert_to_Wav(mp3)
 
         sr, audio = read(path)
-        vector = extract_features(audio, sr)
+        vector, mfcc_plotted = extract_features(audio, sr)
 
         log_likelihood_speakers = np.zeros(len(speakers_models))
 
@@ -156,9 +158,12 @@ def new_predict(request):
 
         prediction_words = np.argmax(log_likelihood_words)
 
-        print('speakers:', log_likelihood_speakers)
-        print('words: ', log_likelihood_words)
+        # print('speakers:', log_likelihood_speakers)
+        # print('words: ', log_likelihood_words)
+        #
 
+        vector_df = pd.DataFrame(mfcc_plotted)
+        scattered_data = list(vector_df.mean(axis=0))
 
 
         # flag = False
@@ -202,7 +207,8 @@ def new_predict(request):
             {
                 'speaker': speakers[prediction_speaker],
                 'word': words[prediction_words],
-                'pieChart': [12,14,20,30,70]
+                'pieChart': [12,14,20,30,70],
+                'scatterChart': scattered_data
             }
         )
 
