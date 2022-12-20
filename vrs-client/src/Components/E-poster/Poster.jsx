@@ -3,10 +3,10 @@ import './Poster.css'
 import Door from '../Door/Door'
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
-// import Container from 'react-bootstrap/Container';
 import Record from '../Record/Record';
 import PieChartCanvas from "../PieChart/pie";
 import axios from "axios";
+import ScatterPlotCanvas from "../PieChart/scatter";
 
 
 let pieData = [25,25,25,25,25]
@@ -42,7 +42,9 @@ function Poster() {
                         </div>
                     </Col>
                     <Col>
-                        <div className='data-analysis'>data-analysis</div>
+                        <div className='data-analysis'>data-analysis
+                        <ScatterPlotCanvas data={[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20]}/>
+                        </div>
                         <div className='conclusion'>conclusion</div>
                     </Col>
                 </Row>

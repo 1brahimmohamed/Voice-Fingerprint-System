@@ -54,6 +54,7 @@ function Record(props) {
             console.log(file)
             console.log(player)
 
+            props.recordHandler(formdata)
 
         }).catch((e) => {
             alert('We could not retrieve your message');

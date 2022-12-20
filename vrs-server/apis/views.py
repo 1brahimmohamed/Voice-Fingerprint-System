@@ -201,9 +201,12 @@ def new_predict(request):
         return JsonResponse(
             {
                 'speaker': speakers[prediction_speaker],
-                'word': words[prediction_words]
+                'word': words[prediction_words],
+                'pieChart': [12,14,20,30,70]
             }
         )
+
+
 
 # def choose_winner(similarity_score, prediction, threshold=100):
 #     similarity_score = np.sort(similarity_score)
