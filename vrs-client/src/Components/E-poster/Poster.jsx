@@ -1,14 +1,13 @@
 import React, {useState} from 'react'
 import './Poster.css'
-import Door from '../Door/Door'
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Record from '../Record/Record';
 import PieChartCanvas from "../PieChart/pie";
 import axios from "axios";
-import ScatterPlotCanvas from "../PieChart/scatter";
+import ScatterPlotCanvas from "../ScatterPlot/scatter";
 import gif from "../../assets/work flow.gif"
-import Plot3D from "../3DPlot";
+import Plot3D from "../3DPlot/3DPlot";
 import deltaImg from "../../assets/outputfinal2.png"
 
 function Poster() {
@@ -30,12 +29,6 @@ function Poster() {
             setScatterChart(response.data.scatterChart)
             setPlot3D(response.data.plot3D)
             setBlackPoint(response.data.prePoint)
-            // console.log(response.data.speaker)
-            // console.log(response.data.word)
-            // console.log(response.data.pieChart)
-            // console.log(response.data.scatterChart)
-            // console.log(response.data.plot3D)
-            // console.log(response.data.prePoint)
         }).catch((err) => {
             console.log(err);
         })

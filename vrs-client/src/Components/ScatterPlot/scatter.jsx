@@ -1,5 +1,5 @@
 import React, {Component, useEffect} from 'react';
-import CanvasJSReact from './canvasjs.react';
+import CanvasJSReact from '../../Packages/CanvasJS/canvasjs.react';
 import Door from "../Door/Door";
 
 let CanvasJS = CanvasJSReact.CanvasJS;

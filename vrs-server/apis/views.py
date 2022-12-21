@@ -12,7 +12,6 @@ from scipy.io.wavfile import read
 import python_speech_features as mfcc
 from sklearn import preprocessing
 
-
 # Loading Speakers Models
 speakers_models_path = "D:/My PC/Projects/DSP/Voice-Recognition-System/vrs-server/apis/models/speakers/"
 speakers_models_files = os.listdir(speakers_models_path)
@@ -35,10 +34,10 @@ momen_3d = [list(df["x_momen"]), list(df["y_momen"]), list(df["z_momen"])]
 mariam_3d = [list(df["x_mariam"]), list(df["y_mariam"]), list(df["z_mariam"])]
 plot_3d = [amr_3d, ibrahim_3d, momen_3d, mariam_3d]
 
+
 # ----------------------- Feature Extraction Functions ----------------------- #
 
 def calculate_delta(array):
-
     rows, cols = array.shape
     deltas = np.zeros((rows, 20))
     N = 2
@@ -76,6 +75,7 @@ def convert_to_Wav(mp3_file):
     sound.export(dist, format="wav")
 
     return dist
+
 
 # ----------------------- Plotting Data Functions ----------------------- #
 
@@ -168,9 +168,9 @@ def new_predict(request):
             prediction_speaker = 4
 
         # Plotting data
-        point_3d = get_3D_plot_point(path)                              # 3D Plot Point
-        scattered_data = get_scatter_plot_data(mfcc_plotted)            # Scatter Plot
-        pie_chart_data = get_pie_chart_data(log_likelihood_speakers)    # Pie chart
+        point_3d = get_3D_plot_point(path)  # 3D Plot Point
+        scattered_data = get_scatter_plot_data(mfcc_plotted)  # Scatter Plot
+        pie_chart_data = get_pie_chart_data(log_likelihood_speakers)  # Pie chart
 
         # response data
         word = words[prediction_words]

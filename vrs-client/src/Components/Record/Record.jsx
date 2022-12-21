@@ -63,6 +63,8 @@ function Record(props) {
 
     }
 
+    // first the access is denied
+
     let access = 'denied',
         speaker;
 
@@ -71,7 +73,7 @@ function Record(props) {
     }
     else {
         speaker = props.speaker
-        if (props.word === 'open')
+        if (props.word === 'open')          // only if the word is equal open when the speaker is one of the team -> ACCESS GRANTED
             access = 'granted'
     }
     return (
