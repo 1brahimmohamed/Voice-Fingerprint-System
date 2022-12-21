@@ -60,7 +60,6 @@ def calculate_delta(array):
 
 def extract_features(audio, rate):
     mfcc_feature = mfcc.mfcc(audio, rate, 0.025, 0.01, 20, nfft=1200, appendEnergy=True)
-    plotted_mfccs = mfcc_feature
     mfcc_feature = preprocessing.scale(mfcc_feature)
     delta = calculate_delta(mfcc_feature)
     combined = np.hstack((mfcc_feature, delta))
@@ -150,7 +149,6 @@ def new_predict(request):
         log_likelihood_words = np.zeros(len(words_models))
 
         point, sr = librosa.load(path)
-
         mfcc_point = librosa.feature.mfcc(y=point)
 
         point_5 = mfcc_point[5].mean()
@@ -173,7 +171,7 @@ def new_predict(request):
 
         print('speakers:', log_likelihood_speakers)
         print('words: ', log_likelihood_words)
-        #
+
 
         vector_df = pd.DataFrame(mfcc_plotted)
         scattered_data = list(vector_df.mean(axis=0))
@@ -181,19 +179,24 @@ def new_predict(request):
         p_speakers = 10 ** log_likelihood_speakers
         pie_chart_values = list((p_speakers / sum(p_speakers)) * 100)
 
+
         normalized_possibility = max(log_likelihood_speakers) - log_likelihood_speakers
-        others_flag = True
+        not_others_flag = True
 
         for i in range(len(normalized_possibility)):
+
             if log_likelihood_speakers[i] == max(log_likelihood_speakers):
                 continue
-            if abs(normalized_possibility[i]) < 0.3:
-                others_flag = False
-                print('gowa')
-        if others_flag:
+
+            if abs(normalized_possibility[i]) < 0.28:
+                not_others_flag = False
+
+        if not_others_flag:
             prediction_speaker = np.argmax(log_likelihood_speakers)
+
         else:
             prediction_speaker = 4
+            print('thersould')
 
         if speakers[prediction_speaker] == "Mariam":
             if log_likelihood_speakers[prediction_speaker] > log_likelihood_words[prediction_words]:

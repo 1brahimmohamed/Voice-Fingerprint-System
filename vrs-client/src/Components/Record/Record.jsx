@@ -28,7 +28,7 @@ function Record(props) {
 
         setTimeout(function () {
             stopRec();
-        }, 3000);
+        }, 2000);
         // setRecord(!record)
     }
 
@@ -63,14 +63,24 @@ function Record(props) {
 
     }
 
+    let access = 'denied',
+        speaker;
 
+    if(props.speaker === 'others'){
+        speaker = 'others'
+    }
+    else {
+        speaker = props.speaker
+        if (props.word === 'open')
+            access = 'granted'
+    }
     return (
         <>
         <div className='mic-container'>
             <img onClick={startRec} src="https://img.icons8.com/external-filled-outline-icons-pause-08/64/null/external-microphone-phone-filled-outline-icons-pause-08.png"/>
             {recordingStatus ? <div><img className='recording-img' src={imgRecording} alt="" /></div> : <div><img src="https://img.icons8.com/ios-glyphs/30/null/dashed-line.png"/></div>}
-            <div>{props.speaker}</div>
-            <div>{props.word}</div>
+            <div>{speaker}</div>
+            <div>Access: {access}</div>
         </div>
         </>
     )

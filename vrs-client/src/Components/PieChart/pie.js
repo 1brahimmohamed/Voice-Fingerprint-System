@@ -9,7 +9,6 @@ let CanvasJSChart = CanvasJSReact.CanvasJSChart;
 function PieChartCanvas(props) {
 
     let pieRenderedData = props.pieChartValues
-
     const options = {
         animationEnabled: true,
         exportEnabled: false,
@@ -22,10 +21,12 @@ function PieChartCanvas(props) {
             indexLabel: "{label}: {y}%",
             startAngle: -90,
             dataPoints: [
-                {y: pieRenderedData[0], label: "Amr"},
-                {y: pieRenderedData[1], label: "Ibrahim"},
-                {y: pieRenderedData[2], label: "Mariam"},
-                {y: pieRenderedData[3], label: "Mo'men"},
+                {y: pieRenderedData.length !== 0 ? pieRenderedData[0] : [0], label: "Amr"},
+                {y: pieRenderedData.length !== 0 ? pieRenderedData[1] : [0], label: "Ibrahim"},
+                {y: pieRenderedData.length !== 0 ? pieRenderedData[2] : [0], label: "Mariam"},
+                {y: pieRenderedData.length !== 0 ? pieRenderedData[3] : [0], label: "Mo'men"},
+                {y: pieRenderedData.length !== 0 ? pieRenderedData[4] : [0], label: "Others"},
+
             ]
         }]
     }
