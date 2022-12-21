@@ -70,7 +70,7 @@ def extract_features(audio, rate):
 # ----------------------- Audio Operations Functions ----------------------- #
 
 def convert_to_Wav(mp3_file):
-    dist = './apis/opertating.wav'
+    dist = './apis/operating.wav'
     sound = AudioSegment.from_mp3(mp3_file)
     sound.export(dist, format="wav")
 
