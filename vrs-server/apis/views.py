@@ -1,6 +1,4 @@
-import json
 import pickle
-
 import librosa
 import numpy as np
 import pandas as pd
@@ -14,20 +12,22 @@ from scipy.io.wavfile import read
 import python_speech_features as mfcc
 from sklearn import preprocessing
 
-# from . import model
-# from . import model2
 
+# Loading Speakers Models
 speakers_models_path = "D:/My PC/Projects/DSP/Voice-Recognition-System/vrs-server/apis/models/speakers/"
 speakers_models_files = os.listdir(speakers_models_path)
 speakers_models = [pickle.load(open(speakers_models_path + f_name, 'rb')) for f_name in speakers_models_files]
 
+# Loading Words Models
 words_models_path = "D:/My PC/Projects/DSP/Voice-Recognition-System/vrs-server/apis/models/words/"
 words_models_files = os.listdir(words_models_path)
 words_models = [pickle.load(open(words_models_path + f_name, 'rb')) for f_name in words_models_files]
 
+# Read-only Arrays for easy accessing
 speakers = ['Amr', 'Ibrahim', 'Mariam', 'Momen', 'others']
 words = ['other', 'other', 'others', 'open', 'other']
 
+# static 3D Plot data reading
 df = pd.read_csv("apis/3d_2.csv")
 amr_3d = [list(df["x_amr"]), list(df["y_amr"]), list(df["z_amr"])]
 ibrahim_3d = [list(df["x_ibrahim"]), list(df["y_ibrahim"]), list(df["z_ibrahim"])]
@@ -35,8 +35,10 @@ momen_3d = [list(df["x_momen"]), list(df["y_momen"]), list(df["z_momen"])]
 mariam_3d = [list(df["x_mariam"]), list(df["y_mariam"]), list(df["z_mariam"])]
 plot_3d = [amr_3d, ibrahim_3d, momen_3d, mariam_3d]
 
+# ----------------------- Feature Extraction Functions ----------------------- #
 
 def calculate_delta(array):
+
     rows, cols = array.shape
     deltas = np.zeros((rows, 20))
     N = 2
@@ -66,53 +68,7 @@ def extract_features(audio, rate):
     return combined, mfcc_feature
 
 
-# def convert_to_Wav(mp3_file):
-#     global i
-#     dir_ = './apis/Website Data/amr-other'
-#     record_names = list(os.listdir(dir_))
-#
-#     max = 0
-#     for name in record_names:
-#         if max < int(name.split('.')[0]):
-#             max = int(name.split('.')[0])
-#
-#     dist = './apis/Website Data/amr-other/' + str(max + 1) + '.wav'
-#
-#     sound = AudioSegment.from_mp3(mp3_file)
-#     sound.export(dist, format="wav")
-#
-#     return dist
-
-
-@csrf_protect
-@csrf_exempt
-def predict(request):
-    if request.method == 'POST':
-
-        mp3 = request.FILES['file']
-        print(request.FILES['file'])
-
-        path = convert_to_Wav(mp3)
-        # PRE-PROCESSING (feature extraction) #
-
-        audio, sr = librosa.load("./apis/operating.wav", duration=2)
-
-        rms = librosa.feature.rms(y=audio)
-        zcr = librosa.feature.zero_crossing_rate(audio)
-        mfcc = librosa.feature.mfcc(y=audio, sr=sr)
-        # dataframe row
-        row_data = f'{np.mean(rms)} {np.mean(zcr)}'
-
-        # add mfcc features
-        for feat in mfcc:
-            row_data += f' {np.mean(feat)}'
-
-        # RETURN OUTPUT TO FRONT #
-        prediction = model.predict([row_data.split()])
-        prediction2 = model2.get_result("./apis/operating.wav")
-
-        return HttpResponse([prediction, prediction2])
-
+# ----------------------- Audio Operations Functions ----------------------- #
 
 def convert_to_Wav(mp3_file):
     dist = './apis/opertating.wav'
@@ -121,15 +77,42 @@ def convert_to_Wav(mp3_file):
 
     return dist
 
-i = 0
+# ----------------------- Plotting Data Functions ----------------------- #
 
+
+def get_3D_plot_point(path):
+    audio, sr = librosa.load(path)
+    mfcc_point = librosa.feature.mfcc(y=audio)
+
+    mfcc_point_5 = mfcc_point[5].mean()
+    mfcc_point_6 = mfcc_point[6].mean()
+    mfcc_point_7 = mfcc_point[7].mean()
+
+    return [float(mfcc_point_5), float(mfcc_point_6), float(mfcc_point_7)]
+
+
+def get_scatter_plot_data(mfcc_plotted):
+    vector_df = pd.DataFrame(mfcc_plotted)
+    scattered_data = list(vector_df.mean(axis=0))
+
+    return scattered_data
+
+
+def get_pie_chart_data(log_likelihood_speakers):
+    p_speakers = 10 ** log_likelihood_speakers
+    pie_chart_values = list((p_speakers / sum(p_speakers)) * 100)
+
+    return pie_chart_values
+
+
+# ----------------------- Endpoints Functions ----------------------- #
 
 @csrf_protect
 @csrf_exempt
 def save_audios(request):
     mp3 = request.FILES['file']
-    path = convert_to_Wav(mp3)
-    return HttpResponse([0])
+    convert_to_Wav(mp3)
+    return HttpResponse('Audio Saved')
 
 
 @csrf_protect
@@ -137,57 +120,45 @@ def save_audios(request):
 def new_predict(request):
     if request.method == 'POST':
 
+        # get mp3 file from the request
         mp3 = request.FILES['file']
+
+        # convert mp3 to wav
         path = convert_to_Wav(mp3)
 
+        # read the converted wav file from the returned path
         sr, audio = read(path)
+
+        # extract features
         vector, mfcc_plotted = extract_features(audio, sr)
 
+        # initialized 2 arrays with zeros
         log_likelihood_speakers = np.zeros(len(speakers_models))
-
         log_likelihood_words = np.zeros(len(words_models))
 
-        point, sr = librosa.load(path)
-        mfcc_point = librosa.feature.mfcc(y=point)
-
-        point_5 = mfcc_point[5].mean()
-        point_6 = mfcc_point[6].mean()
-        point_7 = mfcc_point[7].mean()
-
-        my_point = [float(point_5), float(point_6), float(point_7)]
-
+        # test input with the speaker models and the words mode
         for i in range(len(speakers_models)):
             gmm = speakers_models[i]  # checking with each model one by one
-            scores = np.array(gmm.score(vector))
-            log_likelihood_speakers[i] = scores.sum()
+            scores = np.array(gmm.score(vector))  # get the score
+            log_likelihood_speakers[i] = scores.sum()  # add model score to the array
 
         for j in range(len(words_models)):
-            gmm = words_models[j]  # checking with each model one by one
+            gmm = words_models[j]
             scores = np.array(gmm.score(vector))
             log_likelihood_words[j] = scores.sum()
 
+        # the prediction of the words is the maximum score from the words array
         prediction_words = np.argmax(log_likelihood_words)
 
-        print('speakers:', log_likelihood_speakers)
-        print('words: ', log_likelihood_words)
-
-
-        vector_df = pd.DataFrame(mfcc_plotted)
-        scattered_data = list(vector_df.mean(axis=0))
-
-        p_speakers = 10 ** log_likelihood_speakers
-        pie_chart_values = list((p_speakers / sum(p_speakers)) * 100)
-
-
+        # others detection with threshold
         normalized_possibility = max(log_likelihood_speakers) - log_likelihood_speakers
         not_others_flag = True
 
-        for i in range(len(normalized_possibility)):
-
-            if log_likelihood_speakers[i] == max(log_likelihood_speakers):
+        for k in range(len(normalized_possibility)):
+            if log_likelihood_speakers[k] == max(log_likelihood_speakers):
                 continue
 
-            if abs(normalized_possibility[i]) < 0.28:
+            if abs(normalized_possibility[k]) < 0.28:
                 not_others_flag = False
 
         if not_others_flag:
@@ -195,39 +166,28 @@ def new_predict(request):
 
         else:
             prediction_speaker = 4
-            print('thersould')
+
+        # Plotting data
+        point_3d = get_3D_plot_point(path)                              # 3D Plot Point
+        scattered_data = get_scatter_plot_data(mfcc_plotted)            # Scatter Plot
+        pie_chart_data = get_pie_chart_data(log_likelihood_speakers)    # Pie chart
+
+        # response data
+        word = words[prediction_words]
 
         if speakers[prediction_speaker] == "Mariam":
             if log_likelihood_speakers[prediction_speaker] > log_likelihood_words[prediction_words]:
-                return JsonResponse(
-                    {
-                        'speaker': speakers[prediction_speaker],
-                        'word': 'open',
-                        'pieChart': pie_chart_values,
-                        'scatterChart': scattered_data,
-                        'plot3D': plot_3d,
-                        'prePoint': my_point
-                    }
-                )
+                word = 'open'
             else:
-                return JsonResponse(
-                    {
-                        'speaker': speakers[prediction_speaker],
-                        'word': 'others',
-                        'pieChart': pie_chart_values,
-                        'scatterChart': scattered_data,
-                        'plot3D': plot_3d,
-                        'prePoint': my_point
-                    }
-                )
+                word = 'others'
 
         return JsonResponse(
             {
                 'speaker': speakers[prediction_speaker],
-                'word': words[prediction_words],
-                'pieChart': pie_chart_values,
+                'word': word,
+                'pieChart': pie_chart_data,
                 'scatterChart': scattered_data,
                 'plot3D': plot_3d,
-                'prePoint': my_point
+                'prePoint': point_3d
             }
         )
