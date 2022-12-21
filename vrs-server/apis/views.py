@@ -66,22 +66,22 @@ def extract_features(audio, rate):
     return combined, mfcc_feature
 
 
-def convert_to_Wav(mp3_file):
-    global i
-    dir_ = './apis/Website Data/amr-other'
-    record_names = list(os.listdir(dir_))
-
-    max = 0
-    for name in record_names:
-        if max < int(name.split('.')[0]):
-            max = int(name.split('.')[0])
-
-    dist = './apis/Website Data/amr-other/' + str(max + 1) + '.wav'
-
-    sound = AudioSegment.from_mp3(mp3_file)
-    sound.export(dist, format="wav")
-
-    return dist
+# def convert_to_Wav(mp3_file):
+#     global i
+#     dir_ = './apis/Website Data/amr-other'
+#     record_names = list(os.listdir(dir_))
+#
+#     max = 0
+#     for name in record_names:
+#         if max < int(name.split('.')[0]):
+#             max = int(name.split('.')[0])
+#
+#     dist = './apis/Website Data/amr-other/' + str(max + 1) + '.wav'
+#
+#     sound = AudioSegment.from_mp3(mp3_file)
+#     sound.export(dist, format="wav")
+#
+#     return dist
 
 
 @csrf_protect
@@ -114,15 +114,14 @@ def predict(request):
         return HttpResponse([prediction, prediction2])
 
 
-# def convert_to_Wav(mp3_file):
-#     x = len(os.listdir('./apis/mariam-others'))
-#     dist = './apis/mariam-others/operating'+str(x)+'.wav'
-#     sound = AudioSegment.from_mp3(mp3_file)
-#     sound.export(dist, format="wav")
-#
-#     return dist
-#
-# i = 0
+def convert_to_Wav(mp3_file):
+    dist = './apis/opertating.wav'
+    sound = AudioSegment.from_mp3(mp3_file)
+    sound.export(dist, format="wav")
+
+    return dist
+
+i = 0
 
 
 @csrf_protect
