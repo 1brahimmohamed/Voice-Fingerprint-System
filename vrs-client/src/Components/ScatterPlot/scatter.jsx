@@ -9,11 +9,10 @@ let CanvasJSChart = CanvasJSReact.CanvasJSChart;
 function ScatterPlotCanvas(props) {
 	let dataObjects = []
 
+    // create the array of objects of data
     for(let i = 0; i < props.data.length; i++){
         dataObjects.push({x: i+1, y: (10**16)*props.data[i]})
     }
-
-
 
     const options = {
         theme: "light1",

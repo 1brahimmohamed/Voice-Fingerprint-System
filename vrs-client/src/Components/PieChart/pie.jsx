@@ -21,11 +21,11 @@ function PieChartCanvas(props) {
             indexLabel: "{label}: {y}%",
             startAngle: -90,
             dataPoints: [
-                {y: pieRenderedData.length !== 0 ? pieRenderedData[0] : [0], label: "Amr"},
-                {y: pieRenderedData.length !== 0 ? pieRenderedData[1] : [0], label: "Ibrahim"},
-                {y: pieRenderedData.length !== 0 ? pieRenderedData[2] : [0], label: "Mariam"},
-                {y: pieRenderedData.length !== 0 ? pieRenderedData[3] : [0], label: "Mo'men"},
-                {y: pieRenderedData.length !== 0 ? pieRenderedData[4] : [0], label: "Others"},
+                {y: pieRenderedData.length !== 0 ? Math.round(pieRenderedData[0] * 10) / 10 : [0], label: "Amr"},
+                {y: pieRenderedData.length !== 0 ? Math.round(pieRenderedData[1] * 10) / 10 : [0], label: "Ibrahim"},
+                {y: pieRenderedData.length !== 0 ? Math.round(pieRenderedData[2] * 10) / 10 : [0], label: "Mariam"},
+                {y: pieRenderedData.length !== 0 ? Math.round(pieRenderedData[3] * 10) / 10 : [0], label: "Mo'men"},
+                {y: pieRenderedData.length !== 0 ? Math.round(pieRenderedData[4] * 10) / 10 : [0], label: "Others"},
 
             ]
         }]

@@ -27,7 +27,7 @@ speakers = ['Amr', 'Ibrahim', 'Mariam', 'Momen', 'others']
 words = ['other', 'other', 'others', 'open', 'other']
 
 # static 3D Plot data reading
-df = pd.read_csv("apis/3d_2.csv")
+df = pd.read_csv("apis/Website Data/3d_2.csv")
 amr_3d = [list(df["x_amr"]), list(df["y_amr"]), list(df["z_amr"])]
 ibrahim_3d = [list(df["x_ibrahim"]), list(df["y_ibrahim"]), list(df["z_ibrahim"])]
 momen_3d = [list(df["x_momen"]), list(df["y_momen"]), list(df["z_momen"])]
